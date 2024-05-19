@@ -78,5 +78,8 @@ function extractFileName(url) {
         episodeName = fileName.trim();
     }
 
+    if (!showName && !episodeNumber) {
+        return episodeName;
+    }
     return showName + ' - ' + episodeNumber + ' - ' + episodeName;
 }
