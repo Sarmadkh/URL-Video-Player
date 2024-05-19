@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Video Player</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
     <div class="video-container">
         <input type="text" id="videoUrl" class="url-input" placeholder="Enter video URL">
+        <input type="text" id="hlsUrl" class="url-input" placeholder="Enter HLS (m3u8) URL">
         <div class="video-wrapper">
-            <video id="videoPlayer" controls>
-                Your browser does not support the video tag.
-            </video>
+            <video id="videoPlayer" controls></video>
         </div>
         <h1 id="videoTitle" class="video-title">URL Video Player</h1>
     </div>
