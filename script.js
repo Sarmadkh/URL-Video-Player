@@ -18,7 +18,8 @@ function playVideo() {
         videoPlayer.play();
         
         var fileName = extractFileName(videoUrl);
-        document.title = fileName;
+        var showName = fileName.split(' - ')[0];
+        document.title = showName;
 
         videoTitle.textContent = fileName;
     } else {
@@ -26,11 +27,12 @@ function playVideo() {
     }
 }
 
+
 function isValidURL(url) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
     '((\\d{1,3}\\.){3}\\d{1,3}))'+
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+\\[\\]]*)*'+
     '(\\?[;&a-z\\d%_.~+=-]*)?'+
     '(\\#[-a-z\\d_]*)?$','i');
     return !!pattern.test(url);
@@ -45,20 +47,36 @@ function extractFileName(url) {
 
     var seasonEpisodePattern = /(S\d{2}E\d{2})/i;
     var match = fileName.match(seasonEpisodePattern);
-    
+
+    var showName = "";
+    var episodeNumber = "";
+    var episodeName = "";
+
     if (match) {
-        fileName = match[0] + ' - ' + fileName.replace(match[0], '').trim();
+        episodeNumber = match[0];
+        var index = fileName.search(seasonEpisodePattern);
+        showName = fileName.substring(0, index).trim();
+        fileName = fileName.replace(match[0], '').trim();
     }
 
     var patternsToRemove = [
         /\b\d{3,4}p\b/gi,
-        /\b(mp4|mkv|avi|mov|wmv|flv|bluray|AAC|mpeg|WEBRip|x264)\b/gi
+        /\b(mp4|mkv|avi|mov|wmv|flv|mpeg|BluRay|AAC|HDTV|WEBRip|x264)\b/gi
     ];
+
     patternsToRemove.forEach(function(pattern) {
-        fileName = fileName.replace(pattern, '').trim();
+        var index = fileName.search(pattern);
+        if (index !== -1) {
+            fileName = fileName.substring(0, index).trim();
+        }
     });
 
-    fileName = fileName.replace(/\s+/g, ' ').trim();
+    var showNameIndex = fileName.toLowerCase().indexOf(showName.toLowerCase());
+    if (showNameIndex !== -1) {
+        episodeName = fileName.substring(showNameIndex + showName.length).trim();
+    } else {
+        episodeName = fileName.trim();
+    }
 
-    return fileName;
+    return showName + ' - ' + episodeNumber + ' - ' + episodeName;
 }
