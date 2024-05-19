@@ -52,7 +52,7 @@ function extractFileName(url) {
 
     var patternsToRemove = [
         /\b\d{3,4}p\b/gi,
-        /\b(mp4|mkv|avi|mov|wmv|flv|mpeg|WEBRip|x264)\b/gi
+        /\b(mp4|mkv|avi|mov|wmv|flv|bluray|AAC|mpeg|WEBRip|x264)\b/gi
     ];
     patternsToRemove.forEach(function(pattern) {
         fileName = fileName.replace(pattern, '').trim();
